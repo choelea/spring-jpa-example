@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Category {
 	@Id
@@ -19,6 +21,8 @@ public class Category {
     
     @Column(length = 50,unique=true)
     private String code;
+    
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories", fetch=FetchType.LAZY)
     private Set<Product> product;
     

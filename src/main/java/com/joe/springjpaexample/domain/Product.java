@@ -2,6 +2,7 @@ package com.joe.springjpaexample.domain;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Product {
@@ -29,14 +33,26 @@ public class Product {
     
     private Long price;
     
-//    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER) // This will cause issue when save product and with categories
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "product_category", joinColumns = { @JoinColumn(name = "productId", referencedColumnName = "id") }, inverseJoinColumns = {
 			@JoinColumn(name = "categoryId", referencedColumnName = "id") })    
+    @JsonIgnore
     private Set<Category> categories;
     
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<ProductSpec> productSpecs;
     
-    public Set<Category> getCategories() {
+    
+    public Set<ProductSpec> getProductSpecs() {
+		return productSpecs;
+	}
+
+	public void setProductSpecs(Set<ProductSpec> productSpecs) {
+		this.productSpecs = productSpecs;
+	}
+
+	public Set<Category> getCategories() {
 		return categories;
 	}
 
