@@ -17,7 +17,7 @@ public interface ProductSpecRepository extends CrudRepository<ProductSpec, Long>
 	@Query("FROM ProductSpec s where s.product.id = :productId")
 	Set<ProductSpec> findAllByProductId(@Param("productId") Long productId);
 	
-	@Query("FROM ProductSpec s where s.product.id > :productId")
+	@Query("FROM ProductSpec s where s.product.id > :productId order by s.product.id, id")
 	Set<ProductSpec> findAllWihtProductIdGreater(@Param("productId") Long productId);
 	
 }
