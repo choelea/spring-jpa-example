@@ -69,38 +69,38 @@ public class ManagementService {
         Category cate4 = cateRepo.getByCode("cate-4");
 
         Product product;
-        for (int i = 0; i < 300000; i++) {
-            product = new Product();
-            product.setName("product "+i);
-            product.setCode("p-"+i);
-            product.setPrice(19L);
-            product.setCategories(new HashSet<>());
-            product.getCategories().add(cate1);
-            product.getCategories().add(cate2);
-            pRepo.save(product);
-        }
-
-        for (int i = 300000; i < 800000; i++) {
-            product = new Product();
-            product.setName("product "+i);
-            product.setCode("p-"+i);
-            product.setPrice(19L);
-            product.setCategories(new HashSet<>());
-            product.getCategories().add(cate1);
-            product.getCategories().add(cate3);
-            pRepo.save(product);
-        }
-
-        for (int i = 800000; i < 1000000; i++) {
-            product = new Product();
-            product.setName("product "+i);
-            product.setCode("p-"+i);
-            product.setPrice(19L);
-            product.setCategories(new HashSet<>());
-            product.getCategories().add(cate3);
-            product.getCategories().add(cate2);
-            pRepo.save(product);
-        }
+//        for (int i = 0; i < 300000; i++) {
+//            product = new Product();
+//            product.setName("product "+i);
+//            product.setCode("p-"+i);
+//            product.setPrice(19L);
+//            product.setCategories(new HashSet<>());
+//            product.getCategories().add(cate1);
+//            product.getCategories().add(cate2);
+//            pRepo.save(product);
+//        }
+//
+//        for (int i = 300000; i < 800000; i++) {
+//            product = new Product();
+//            product.setName("product "+i);
+//            product.setCode("p-"+i);
+//            product.setPrice(19L);
+//            product.setCategories(new HashSet<>());
+//            product.getCategories().add(cate1);
+//            product.getCategories().add(cate3);
+//            pRepo.save(product);
+//        }
+//
+//        for (int i = 800000; i < 1000000; i++) {
+//            product = new Product();
+//            product.setName("product "+i);
+//            product.setCode("p-"+i);
+//            product.setPrice(19L);
+//            product.setCategories(new HashSet<>());
+//            product.getCategories().add(cate3);
+//            product.getCategories().add(cate2);
+//            pRepo.save(product);
+//        }
 
         for (int i = 0; i < 20; i++) {
             product = new Product();
