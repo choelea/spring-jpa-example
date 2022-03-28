@@ -1,0 +1,23 @@
+server:
+  undertow:
+    # 访问日志
+    accesslog:
+      dir: ./logs  # undertow的access日志只能输出到文件
+      enabled: true
+      prefix: ${spring.application.name}
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞IO操作, undertow会从这个线程池中取得线程
+    # 默认值是IO线程数*8,推荐 32 * nCPU
+    threads:
+      worker: 128
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接
+    # 默认设置每个CPU核心一个线程,推荐 4 * n CPU
+      io: 16
+
+spring:
+  application:
+    name: Jpa Example
+    version: 1.0.0
+  datasource:
+    url: jdbc:mysql://localhost:3306/data-demo?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    username: root
+    password: 123456
