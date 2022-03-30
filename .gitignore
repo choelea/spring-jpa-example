@@ -1,6 +1,8 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
+logs/
 
+application-joe.yml
 ### STS ###
 .apt_generated
 .classpath
