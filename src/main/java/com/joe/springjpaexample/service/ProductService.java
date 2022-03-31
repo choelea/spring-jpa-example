@@ -1,18 +1,22 @@
 package com.joe.springjpaexample.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.joe.springjpaexample.domain.Product;
 import com.joe.springjpaexample.repo.ProductRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductService {
-	@Autowired
 	private ProductRepository productRepo;
-	
+
+	public ProductService(ProductRepository productRepo) {
+		this.productRepo = productRepo;
+	}
+
+	public Product get(Long id){
+		return productRepo.findById(id).get();
+	}
 	/**
 	 * Specification usage example
 	 * @param caseNo

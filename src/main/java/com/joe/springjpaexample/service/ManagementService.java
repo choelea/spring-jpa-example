@@ -5,11 +5,14 @@ import com.joe.springjpaexample.domain.Product;
 import com.joe.springjpaexample.repo.CategoryRepository;
 import com.joe.springjpaexample.repo.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author : Joe
@@ -67,9 +70,26 @@ public class ManagementService {
         Category cate2 = cateRepo.getByCode("cate-2");
         Category cate3 = cateRepo.getByCode("cate-3");
         Category cate4 = cateRepo.getByCode("cate-4");
+        List<Category> categories = new ArrayList<>(4);
+        categories.add(cate1);
+        categories.add(cate2);
+        categories.add(cate3);
+        categories.add(cate4);
 
+        int batchSize = 10000;
+        for (int i = 0; i < 80; i++) {
+            Category c1 = categories.get(RandomUtils.nextInt(0, 4));
+            Category c2 = categories.get(RandomUtils.nextInt(0, 4));
+            insertProducts(i*batchSize, batchSize, c1, c2);
+        }
+    }
+
+
+    private void insertProducts(int startIndex, int batchSize, Category cate1, Category cate2){
+        List<Product> list = new ArrayList<>(batchSize);
         Product product;
-        for (int i = 0; i < 300000; i++) {
+        int end = startIndex + batchSize;
+        for (int i = startIndex; i < end; i++) {
             product = new Product();
             product.setName("product "+i);
             product.setCode("p-"+i);
@@ -77,41 +97,8 @@ public class ManagementService {
             product.setCategories(new HashSet<>());
             product.getCategories().add(cate1);
             product.getCategories().add(cate2);
-            pRepo.save(product);
+            list.add(product);
         }
-
-        for (int i = 300000; i < 800000; i++) {
-            product = new Product();
-            product.setName("product "+i);
-            product.setCode("p-"+i);
-            product.setPrice(19L);
-            product.setCategories(new HashSet<>());
-            product.getCategories().add(cate1);
-            product.getCategories().add(cate3);
-            pRepo.save(product);
-        }
-
-        for (int i = 800000; i < 1000000; i++) {
-            product = new Product();
-            product.setName("product "+i);
-            product.setCode("p-"+i);
-            product.setPrice(19L);
-            product.setCategories(new HashSet<>());
-            product.getCategories().add(cate3);
-            product.getCategories().add(cate2);
-            pRepo.save(product);
-        }
-
-        for (int i = 0; i < 20; i++) {
-            product = new Product();
-            product.setName("iphone");
-            product.setCode("pp-"+i);
-            product.setPrice(19L);
-            product.setCategories(new HashSet<>());
-            product.getCategories().add(cate4);
-            product.getCategories().add(cate2);
-            pRepo.save(product);
-        }
-
+        pRepo.saveAll(list);
     }
 }
