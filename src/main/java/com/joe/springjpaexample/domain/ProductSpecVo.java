@@ -1,6 +1,5 @@
 package com.joe.springjpaexample.domain;
 
-import javax.persistence.Column;
 
 /**
  * @author : Joe

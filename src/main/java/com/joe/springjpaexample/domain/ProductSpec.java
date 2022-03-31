@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class ProductSpec {
 	@Id
 	@Column(length = 20)
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 50, nullable = false)
