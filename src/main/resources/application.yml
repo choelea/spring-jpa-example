@@ -26,6 +26,9 @@ spring:
     admin:
       client:
         url: http://localhost:8080
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 management:
   endpoints:
