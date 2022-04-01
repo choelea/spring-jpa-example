@@ -11,6 +11,8 @@
 指定active profile可以使用 `./mvnw spring-boot:run -Dspring-boot.run.profiles=joe`
 
 如果需要指定JVM参数，最好打jar包执行： `java -Xmx2g -jar target/spring-jpa-example-0.0.1-SNAPSHOT.jar --spring.profiles.active=joe`
+
+打包命令： `mvn package -Dmaven.test.skip=true `
 # Test
  - Run Spring Boot application
  - nav to http://localhost:8080/products?caseNo=I0101
