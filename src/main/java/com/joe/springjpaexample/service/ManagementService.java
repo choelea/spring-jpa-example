@@ -84,9 +84,7 @@ public class ManagementService {
                 insertProducts(finalI *batchSize, batchSize, c1, c2);
                 log.info("Current Thread {} finished", Thread.currentThread().getId()+Thread.currentThread().getName());
             });
-
         }
-
 
         log.info(""+taskExecutor.getActiveCount());
         log.info(""+taskExecutor.getCorePoolSize());
