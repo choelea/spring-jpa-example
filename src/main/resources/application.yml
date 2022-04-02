@@ -29,6 +29,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  task:
+    execution:
+      pool:
+        core-size: 12
+        max-size: 100
+        queue-capacity: 70
 
 management:
   endpoints:

@@ -5,6 +5,7 @@ import com.joe.springjpaexample.domain.Product;
 import com.joe.springjpaexample.repo.CategoryRepository;
 import com.joe.springjpaexample.repo.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
@@ -74,17 +75,17 @@ public class ManagementService {
         categories.add(cate3);
         categories.add(cate4);
 
-//        int batchSize = 10;
-//        for (int i=0; i < 80; i++) {
-//            int finalI = i;
-//            taskExecutor.execute(()->{
-//                Category c1 = categories.get(RandomUtils.nextInt(0, 4));
-//                Category c2 = categories.get(RandomUtils.nextInt(0, 4));
-//                insertProducts(finalI *batchSize, batchSize, c1, c2);
-//                log.info("Current Thread {} finished", Thread.currentThread().getId()+Thread.currentThread().getName());
-//            });
-//
-//        }
+        int batchSize = 10000;
+        for (int i=0; i < 80; i++) {
+            int finalI = i;
+            taskExecutor.execute(()->{
+                Category c1 = categories.get(RandomUtils.nextInt(0, 4));
+                Category c2 = categories.get(RandomUtils.nextInt(0, 4));
+                insertProducts(finalI *batchSize, batchSize, c1, c2);
+                log.info("Current Thread {} finished", Thread.currentThread().getId()+Thread.currentThread().getName());
+            });
+
+        }
 
 
         log.info(""+taskExecutor.getActiveCount());

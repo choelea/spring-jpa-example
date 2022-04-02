@@ -7,6 +7,7 @@ package com.joe.springjpaexample.test;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.task.TaskRejectedException;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.CountDownLatch;
@@ -31,7 +32,7 @@ public class ThreadPoolTaskExecutorUnitTest {
     }
 
     /**
-     * 默认的时候corePoolSize=1， maxPoolSize和queueCapacity无限制
+     * 默认的时候corePoolSize=1， maxPoolSize和queueCapacity无限制, 始终只有一个线程
      */
     @Test
     public void whenUsingDefaults_thenSingleThread() {
@@ -48,21 +49,29 @@ public class ThreadPoolTaskExecutorUnitTest {
         }
     }
 
+    /**
+     * maxPoolSize + queueCapacity 满足不了线程数的需求的时候，任务会被拒绝，并抛出异常TaskRejectedException
+     */
     @Test
-    public void whenCorePoolSizeFive_thenFiveThreads() {
+    public void whenMaxPoolSizePlusQueueCapacity_lessThan_required_thenGotException() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(5);
+        taskExecutor.setMaxPoolSize(10);
+        taskExecutor.setQueueCapacity(5);
         taskExecutor.afterPropertiesSet();
 
-        int numThreads = 10;
+        int numThreads = 16;
         CountDownLatch countDownLatch = new CountDownLatch(numThreads);
-        this.startThreads(taskExecutor, countDownLatch, numThreads);
-
-        while (countDownLatch.getCount() > 0) {
-            Assert.assertEquals(5, taskExecutor.getPoolSize());
+        try{
+            this.startThreads(taskExecutor, countDownLatch, numThreads);
+        }catch (Exception e){
+            Assert.assertTrue(e instanceof TaskRejectedException);
         }
     }
 
+    /**
+     * 当queueCapacity + corePoolSize 满足需求线程数的时候，是不会去创建corePoolSize数量外的线程的。
+      */
     @Test
     public void whenCorePoolSizeFiveAndMaxPoolSizeTen_thenFiveThreads() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -78,6 +87,9 @@ public class ThreadPoolTaskExecutorUnitTest {
         }
     }
 
+    /**
+     * 放弃队列缓冲的时候(queueCapacity=0)，会根据需要创建 <=maxPoolSize数量的线程
+     */
     @Test
     public void whenCorePoolSizeFiveAndMaxPoolSizeTenAndQueueCapacityZero_thenTenThreads() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -94,6 +106,9 @@ public class ThreadPoolTaskExecutorUnitTest {
         }
     }
 
+    /**
+     * corePoolSize +  queueCapacity < 需要线程数量的时候, 需要创建
+     */
     @Test
     public void whenCorePoolSizeFiveAndMaxPoolSizeTenAndQueueCapacityTen_thenTenThreads() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -104,7 +119,6 @@ public class ThreadPoolTaskExecutorUnitTest {
 
         CountDownLatch countDownLatch = new CountDownLatch(20);
         this.startThreads(taskExecutor, countDownLatch, 20);
-
         while (countDownLatch.getCount() > 0) {
             Assert.assertEquals(10, taskExecutor.getPoolSize());
         }
@@ -113,6 +127,5 @@ public class ThreadPoolTaskExecutorUnitTest {
     private void log(ThreadPoolTaskExecutor taskExecutor){
         System.out.println("Core Pool Size:" + taskExecutor.getCorePoolSize());
         System.out.println("Max Pool Size:" + taskExecutor.getMaxPoolSize());
-        taskExecutor.getThreadPoolExecutor().get
     }
 }
