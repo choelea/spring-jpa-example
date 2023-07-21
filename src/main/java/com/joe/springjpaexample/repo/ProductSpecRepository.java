@@ -1,14 +1,13 @@
 package com.joe.springjpaexample.repo;
 
-import java.util.Set;
-
+import com.joe.springjpaexample.domain.ProductSpec;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.joe.springjpaexample.domain.ProductSpec;
+import java.util.Set;
 
 
 @Repository

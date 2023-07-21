@@ -22,7 +22,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/products")
-	public List<Product> find(@RequestParam String caseNo){
+	public List<Product> find(@RequestParam(required = false) String caseNo){
 		return productService.find(caseNo);
 	}
 }
